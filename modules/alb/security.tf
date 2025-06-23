@@ -1,7 +1,7 @@
 # ALB用セキュリティグループ
 resource "aws_security_group" "alb" {
   name        = "${var.project}-alb-sg-${var.environment}"
-  description = "${var.project} ALB用セキュリティグループ"
+  description = "${var.project} ALB security group"
   vpc_id      = var.vpc_id
 
   tags = {

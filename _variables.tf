@@ -76,3 +76,45 @@ variable "certificate_arn" {
   default     = ""
 }
 
+# Aurora Serverless v2設定
+variable "aurora_min_acu" {
+  description = "Aurora Serverless v2の最小ACU"
+  type        = number
+  default     = 0
+}
+
+variable "aurora_max_acu" {
+  description = "Aurora Serverless v2の最大ACU"
+  type        = number
+  default     = 1
+}
+
+variable "database_name" {
+  description = "データベース名"
+  type        = string
+}
+
+variable "master_username" {
+  description = "マスターユーザー名"
+  type        = string
+}
+
+# ElastiCache設定
+variable "cache_node_type" {
+  description = "ElastiCacheノードタイプ"
+  type        = string
+  default     = "cache.t4g.small"
+}
+
+variable "cache_num_nodes" {
+  description = "ElastiCacheノード数"
+  type        = number
+  default     = 1
+}
+
+variable "cache_port" {
+  description = "ElastiCacheポート"
+  type        = number
+  default     = 11211
+}
+

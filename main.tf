@@ -42,3 +42,29 @@ module "ecs" {
     Project = var.project
   }
 }
+
+module "db" {
+  source = "./modules/db"
+
+  environment       = var.environment
+  project           = var.project
+  vpc_id            = module.vpc.vpc_id
+  subnet_ids        = module.vpc.private_db_subnet_ids
+  subnet_group_name = module.vpc.db_subnet_group_name
+  aurora_min_acu    = var.aurora_min_acu
+  aurora_max_acu    = var.aurora_max_acu
+  database_name     = var.database_name
+  master_username   = var.master_username
+}
+
+module "cache" {
+  source = "./modules/cache"
+
+  environment       = var.environment
+  project           = var.project
+  vpc_id            = module.vpc.vpc_id
+  subnet_ids        = module.vpc.private_db_subnet_ids
+  cache_node_type   = var.cache_node_type
+  cache_num_nodes   = var.cache_num_nodes
+  cache_port        = var.cache_port
+}

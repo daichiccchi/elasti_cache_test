@@ -154,3 +154,48 @@ resource "aws_db_subnet_group" "aurora" {
     Name = "${var.project}-aurora-subnet-group-${var.environment}"
   }
 }
+
+# VPCエンドポイント用セキュリティグループ（CloudWatch Logs用）
+resource "aws_security_group" "vpc_endpoints" {
+  name        = "${var.project}-vpc-endpoints-sg-${var.environment}"
+  description = "${var.project} VPC endpoints security group"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [aws_vpc.main.cidr_block]
+    description = "Allow HTTPS from VPC"
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow all outbound traffic"
+  }
+
+  tags = {
+    Name = "${var.project}-vpc-endpoints-sg-${var.environment}"
+  }
+}
+
+# CloudWatch Logs VPCエンドポイント
+resource "aws_vpc_endpoint" "logs" {
+  vpc_id              = aws_vpc.main.id
+  service_name        = "com.amazonaws.${data.aws_region.current.id}.logs"
+  vpc_endpoint_type   = "Interface"
+  subnet_ids          = aws_subnet.private_fargate[*].id
+  security_group_ids  = [aws_security_group.vpc_endpoints.id]
+  private_dns_enabled = true
+
+  tags = {
+    Name = "${var.project}-logs-endpoint-${var.environment}"
+  }
+}
+
+# データソース
+data "aws_region" "current" {}
+

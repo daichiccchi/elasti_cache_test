@@ -1,7 +1,7 @@
 # ECSタスク実行ロール
 resource "aws_iam_role" "ecs_task_execution" {
   name = "${var.project}-ecs-task-execution-role-${var.environment}"
-  description = "${var.project} ECSタスク実行用IAMロール"
+  description = "${var.project} ECS task execution IAM role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -40,7 +40,7 @@ resource "aws_iam_role_policy" "ecs_task_execution_custom" {
 # ECSタスクロール
 resource "aws_iam_role" "ecs_task" {
   name = "${var.project}-ecs-task-role-${var.environment}"
-  description = "${var.project} ECSタスク用IAMロール"
+  description = "${var.project} ECS task IAM role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"

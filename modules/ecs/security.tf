@@ -1,7 +1,7 @@
 # ECSサービス用セキュリティグループ
 resource "aws_security_group" "ecs_service" {
   name        = "${var.project}-ecs-service-sg-${var.environment}"
-  description = "${var.project} ECSサービス用セキュリティグループ"
+  description = "${var.project} ECS service security group"
   vpc_id      = var.vpc_id
 
   tags = {
@@ -9,16 +9,16 @@ resource "aws_security_group" "ecs_service" {
   }
 }
 
-# # ECSサービスからのアウトバウンド通信を許可（IPv4）
-# resource "aws_security_group_rule" "ecs_service_egress_ipv4" {
-#   type              = "egress"
-#   from_port         = 0
-#   to_port           = 0
-#   protocol          = "-1"
-#   cidr_blocks       = ["0.0.0.0/0"]
-#   security_group_id = aws_security_group.ecs_service.id
-#   description       = "すべてのIPv4アウトバウンド通信を許可"
-# }
+# ECSサービスからのアウトバウンド通信を許可（IPv4）
+resource "aws_security_group_rule" "ecs_service_egress_ipv4" {
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.ecs_service.id
+  description       = "Allow all IPv4 outbound traffic"
+}
 
 # ECSサービスからのアウトバウンド通信を許可（IPv6）
 resource "aws_security_group_rule" "ecs_service_egress_ipv6" {
